@@ -1,8 +1,10 @@
-# Creating a **RESTful API using Java, Spring Boot, and MySQL**, using **VS Code**, **Postman**, and **MySQL Workbench**
+# 📚 Book Management REST API
+
+A simple RESTful API built with **Java**, **Spring Boot**, **MySQL**, **VS Code**, **Postman** to perform CRUD operations on books.
 
 ---
 
-## ✅ Project Goal
+## 🔰 Project Goal
 
 We'll build a simple **Book Management API** that supports:
 
@@ -12,24 +14,77 @@ We'll build a simple **Book Management API** that supports:
 * `PUT /books/{id}` – update a book
 * `DELETE /books/{id}` – delete a book
 
+### 📬 API Endpoints
+| Method | Endpoint      | Description         |
+| ------ | ------------- | ------------------- |
+| GET    | `/books`      | Get all books       |
+| GET    | `/books/{id}` | Get book by ID      |
+| POST   | `/books`      | Create a new book   |
+| PUT    | `/books/{id}` | Update a book by ID |
+| DELETE | `/books/{id}` | Delete a book by ID |
+
 ---
 
-## 1️⃣ Project Setup
+## ✅ Prerequisites
+
+Ensure the following are installed on your system:
+
+- [Java JDK 17 or 21](https://adoptium.net/) - Make sure the option "JAVA_HOME environment variable" is checked during installation.
+- [MySQL Server](https://dev.mysql.com/downloads/mysql/)
+- [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) (optional for DB GUI)
+- [VS Code](https://code.visualstudio.com/) or any IDE
+- [Postman](https://www.postman.com/downloads/) (for API testing)
+
+---
+
+## 🧩 Project Structure
+
+```
+bash
+Copy
+Edit
+bookapi/
+├── src/
+│   └── main/
+│       └── java/
+│           └── com/example/bookapi/
+│               ├── BookapiApplication.java   # Main class
+│               ├── model/
+│               │   └── Book.java             # Entity
+│               ├── repository/
+│               │   └── BookRepository.java   # JPA repository
+│               └── controller/
+│                   └── BookController.java   # REST controller
+└── resources/
+    └── application.properties                # DB config
+```
+
+---
+
+## 🛡️ Notes
+
+* Make sure your MySQL service is running before starting the app.
+* If you're using VS Code, install the Java Extension Pack for better support.
+* If JAVA_HOME is not set, you’ll need to configure it in system environment variables.
+
+---
+
+## 1. Project Setup
 
 ### Option A: Use Spring Initializer (recommended)
 
 Visit [https://start.spring.io](https://start.spring.io) and select:
 
-* Project: Maven
-* Language: Java
-* Spring Boot: (latest stable)
+* Project: **Maven**
+* Language: **Java**
+* Spring Boot: **latest stable** - w/o SNAPSHOT
 * Dependencies:
 
   * Spring Web
   * Spring Data JPA
   * MySQL Driver
 
-Click **Generate** to download the zip → unzip it → open in **VS Code**.
+Click **Generate** to download the zip --> unzip it --> open in VS Code.
 
 ### Option B: Create using terminal
 
@@ -45,7 +100,7 @@ code .
 
 ---
 
-## 2️⃣ Configure MySQL
+## 2. Configure MySQL
 
 ### Create a Database
 
@@ -57,11 +112,12 @@ CREATE DATABASE bookdb;
 
 ---
 
-## 3️⃣ Configure `application.properties`
+## 3. Configure `application.properties`
 
-In `src/main/resources/application.properties`, add:
+In `src/main/resources/application.properties`, update:
 
 ```properties
+spring.application.name=bookapi
 spring.datasource.url=jdbc:mysql://localhost:3306/bookdb
 spring.datasource.username=root
 spring.datasource.password=your_mysql_password
@@ -71,7 +127,7 @@ spring.jpa.show-sql=true
 
 ---
 
-## 4️⃣ Define the Entity
+## 4. Define the Entity
 
 Create a file: `src/main/java/com/example/bookapi/model/Book.java`
 
@@ -89,15 +145,25 @@ public class Book {
     private String title;
     private String author;
 
-    // Getters and setters
+    public Book() {} // No-arg constructor
+
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
 }
 ```
 
 ---
 
-## 5️⃣ Create the Repository
+## 5. Create the Repository
 
-Create `BookRepository.java`:
+Create a file: `src/main/java/com/example/bookapi/repository/BookRepository.java`:
 
 ```java
 package com.example.bookapi.repository;
@@ -110,9 +176,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {}
 
 ---
 
-## 6️⃣ Create the Controller
+## 6. Create the Controller
 
-Create `BookController.java`:
+Create a file: `src/main/java/com/example/bookapi/controller/BookController.java`:
 
 ```java
 package com.example.bookapi.controller;
@@ -164,7 +230,27 @@ public class BookController {
 
 ---
 
-## 7️⃣ Run the App
+## 7. Create the API Application
+
+Create a file: `src\main\java\com\example\bookapi\BookapiApplication.java`:
+
+```java
+package com.example.bookapi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BookapiApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(BookapiApplication.class, args);
+    }
+}
+```
+
+---
+
+## 8. Run the App
 
 In terminal:
 
@@ -176,28 +262,33 @@ It should run on `http://localhost:8080`.
 
 ---
 
-## 8️⃣ Test with Postman
+## 9. Test with Postman
 
 Use Postman to make requests like:
 
 * `GET http://localhost:8080/books`
 * `POST http://localhost:8080/books`
 
-  ```json
-  {
-    "title": "Clean Code",
-    "author": "Robert Martin"
-  }
-  ```
+🔸 For POST --> Body --> raw --> JSON:
+```json
+{
+  "title": "The Pragmatic Programmer",
+  "author": "Andy Hunt"
+}
+```
+---
+
+## 💡 Future Enhancements
+
+* Add Swagger/OpenAPI documentation
+* Add DTOs and service layer
+* Include exception handling and logging
+* Add pagination support
 
 ---
 
-## ✅ Done!
+## 📄 License
 
-Would you like me to:
+This project is open-source and free to use.
 
-* Help generate this as a GitHub repo?
-* Add Swagger API docs?
-* Add unit testing or Docker support?
-
-Let me know how far you want to go.
+---
