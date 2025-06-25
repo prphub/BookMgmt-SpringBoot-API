@@ -2,6 +2,8 @@
 
 A simple RESTful API built with **Java**, **Spring Boot**, **MySQL**, **VS Code**, **Postman** to perform CRUD operations on books.
 
+GitHub Link : https://github.com/prphub/BookMgmt-SpringBoot-API
+
 ---
 
 ## 🔰 Project Goal
@@ -72,8 +74,6 @@ bookapi/
 ## 🛠️ Setup Instructions
 
 ## 1. Clone Project
-
-GitHub Link : https://github.com/prphub/BookMgmt-SpringBoot-API
 
 ```bash
 git clone https://github.com/prphub/BookMgmt-SpringBoot-API.git
